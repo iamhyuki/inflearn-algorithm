@@ -1,11 +1,11 @@
 ◆ 순환(Recursion)의 개념과 기본예제 1
 
+ **Code01.java 예제 참고 
+ 
 Recursion을 한마디로? 자기 자신을 호출하는 함수(재귀함수)
 
  - 만약 자기 자신함수를 호출하면 어떻게 되는가?
 	
-	**Code01.class 예제 참고 
-		
  - 무한루프에 빠지지 않으려면? (func2)
 	1) Base case : 적어도 하나의 recursion에 빠지지 않는 경우가 존재해야 한다.
 	2) Recursive case : recursion을 반복하다보면 결국 base case로 수렴해야 한다.
@@ -32,13 +32,13 @@ Recursion을 한마디로? 자기 자신을 호출하는 함수(재귀함수)
 ================================================================================================================================
 ◆ 순환(Recursion)의 개념과 기본예제 2
 
+ **Code02.java 예제 참고
+ 
 Recursive Thinking : 순환적으로 사고하기
 
 Recursion은 수학함수 계산에만 유용한가?
 -> 수학함수뿐 아니라 다른 많은 문제들을 recursion으로 해결할 수 있다.
 		   
-	**Code02.class 예제 참고
-	
  - 문자열의 길이 계산(length)
  - 문자열의 프린트(printChars)
  - 문자열 뒤집어 프린트(printCharsReverse)
@@ -54,6 +54,8 @@ Recursion VS Iteration
 ================================================================================================================================
 ◆ 순환(Recursion)의 개념과 기본예제 3
 
+ **Code03.java 예제 참고 
+ 
 Designing Recursion : 순환 알고리즘의 설계
 
 	- 순환적 알고리즘 설계
@@ -65,3 +67,61 @@ Designing Recursion : 순환 알고리즘의 설계
 	- 최대값 찾기(findMax, findMax2)
 	- 이진 탐색(binarySearch)
 	
+================================================================================================================================
+◆ Recursion의 응용 - 미로찾기 1
+
+ **Code04.class 예제 참고 
+  
+ ** 예제 참고 : Code04.java
+ 
+* 이미지 참고 : 섹션2_순환_1미로찾기.PNG / 섹션2_순환_2미로찾기예제결과.PNG
+
+Recursive Thinking 리커시브하게 생각하라
+
+	- 현재 위치에서 출구까지 가는 경로가 있으려면
+	  1) 현재 위치가 출구이거나 혹은
+	  2) 이웃한 셀들 중 하나에서 현재 위치를 지나지 않고 출구까지 가는 경로가 있거나
+	  
+	  
+미로찾기(Decision Problem - 답이 yes or no인 문제)
+
+--- 첫번쨰 예시(실패 케이스)
+	boolean findPath(x, y)
+		if(x, y) is the exit								<- 현재 위치가 출구이거나.
+			return true;
+			
+		else
+			for each neighbouring cell(x', y') of (x, y) do	<- 이웃한 셀들 중에서
+				if(x', y') is on the pathway				<- 통로인 경우
+					if findPath(x', y')						<- 출구까지 가는 경로가 있는지 다시 검사
+						return ture;
+			return false;
+	*해설 : 이는 무한루프에 빠질 수 있다. 항상 recursion은 무한루프에 빠지지않는지?를 고려해야한다.
+			-> 해결을 위해선 이미 방문한 위치와 그렇지 않은 위치를 표시해야 한다.
+	
+--- 두번쨰 예시
+	boolean findPath(x, y)
+		if (x, y) is the exit
+			return true;
+		else
+			mark (x, y) as a visited cell;						<- 이미 방문한 위치 표시
+			for each neighbouring cell(x', y') of (x, y) do		
+				if(x', y') is on the pathway and not visited	<- 통로이면서 이미 방문한 위치가 아닌 경우
+					if findPath(x', y')
+						return ture;
+			return false;
+	
+--- 세번쨰 예시
+	boolean findPath(x, y)
+		if(x, y) is either on the wall or a visited cell
+			return false;
+		else if (x,y) is the exit
+			return true;
+		else
+			mark (x, y) as a visited cell;
+			for each neighbouring cell (x', y') of (x, y) do
+				if findPath(x', y')
+					return true;
+			return false;
+	*해설 : 두번쨰 케이스와 같은 기능이지만 조금 더 메서드가 간단하다. but recursion의 횟수는 늘어난다.
+
