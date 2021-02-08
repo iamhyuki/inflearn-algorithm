@@ -70,11 +70,9 @@ Designing Recursion : 순환 알고리즘의 설계
 ================================================================================================================================
 ◆ Recursion의 응용 - 미로찾기 1
 
- **Code04.class 예제 참고 
-  
- ** 예제 참고 : Code04.java
+ **Code04.java 예제 참고 
  
-* 이미지 참고 : 섹션2_순환_1미로찾기.PNG / 섹션2_순환_2미로찾기예제결과.PNG
+* 이미지 참고 : Code04_1_미로찾기 / Code04_2_미로찾기예제결과.PNG
 
 Recursive Thinking 리커시브하게 생각하라
 
@@ -125,3 +123,90 @@ Recursive Thinking 리커시브하게 생각하라
 			return false;
 	*해설 : 두번쨰 케이스와 같은 기능이지만 조금 더 메서드가 간단하다. but recursion의 횟수는 늘어난다.
 
+================================================================================================================================
+◆ Recursion의 응용 - Counting cells in a Blob
+
+ **Code05.java 예제 참고 
+ * 이미지 참고 : Code05_1~11_CountingCellsInABlob.PNG
+ 
+--- Code05_1~2_CountingCellsInABlob.PNG
+	- Binary 이미지
+	- 각 픽셀은 background pixel 이거나 혹은 image pixel
+	- 서로 연결된 image pixel들의 집합을 blob이라고 부른다.
+	- 상하좌우 및 대각방향으로도 연결된 것으로 간주.
+	
+	입력 : N*N 크기의 2차원 그리드(grid)
+		  하나의 좌표(x,y)
+		
+	출력 : 픽셀(x, y)가 포함된 blob의 크기
+		  (x, y)가 어떤 blob에도 속하지 않는 경우에는 0
+		  
+Recursive Thinking
+	현재 픽셀이 속한 blob의 크기를 카운트하려면
+		-> 현재 픽셀이 image color가 아니라면 0을 반환한다.
+		-> 현재 픽셀이 image color 라면
+			먼저 현재 픽셀을 카운트 한다.(count=1)
+			현재 픽셀이 중복카운트 되는 것을 방지하기 위해서 다른 색으로 칠한다.
+			현재 픽셀에 이웃한 모든 픽셀들에 대해서 그 픽셀이 속한 blob의 크기를 카운트하여 카운터에 더해준다.
+			해당 카운트를 반환한다.
+			
+순환적 알고리즘 Code05_3~11_CountingCellsInABlob.PNG
+
+--- Algorithm for countCells(x, y)
+	if the pixel(x, y) is outside the grid
+		the result is 0;
+	else if pixel(x, y) is not an image pixel or alrerady counted
+		the result is 0;
+	else
+		set the color of the pixel(x, y) to a red color; <- red는 카운트 되었다는 것을 표시하기 위함
+		the result is 1 plus the number of cells in each piece of the blob
+			that includes a nearest neighbour;
+	
+================================================================================================================================
+◆ Recursion의 응용 - N Queens problem
+
+ **Code06.java 예제 참고 
+ * 이미지 참고 : Code06_1_NQueensProblem.PNG
+ 
+The eight queens problem
+
+BackTracking이란? : 되추적 기법
+	내가 내린 결정이 해가 아니라면 그 결정을 번복하고 다시 결정을 내리는 것.
+	
+상태공간트리
+	- 상태공간트리란? 찾는 해(solution)를 포함하는 트리.
+	즉, 해가 존재한다면 그것은 반드시 이 트리의 어떤 한 노드에 해당함
+	따라서 이 트리를 체계적으로 탐색하면 해를 구할 수 있음.
+	
+	- 상태공간 트리의 모든 노드를 탐색해야 하는 것은 아니다.
+	
+되추적기법(Backtracking)
+	- 상태공간트리를 "깊이 우선 방식으로 탐색"하여 해를 찾는 알고리즘을 말한다.
+	
+Design Recursion
+	int[] cols = new int [N+1];
+	boolean queens( int level ) <- 매개변수는 내가 현재 트리의 어떤 노드에 있는지를 지정해야 한다.
+	{									cols[i] = j는 i번 말이 (i행 j)에 놓였음을 의미한다.
+		if (!promising(level))
+			return false;
+		else if (level == N)	<- promising 테스트를 통과했다는 가정하에 level==N이면 모든 말이 놓였다는 의미이고
+			return true;				 따라서 성공이다.
+		for(int i=1; i<=N; i++) {	<- level+1번째 말을 각각의 열에 놓은 후 recursion을 호출한다.
+			cols[level+1] = i;
+			if(queens(level+1))
+				return true;
+		}
+		return false
+	}
+	
+	boolean promising(int level)
+	{
+		for (int i=1; i<level; i++) {
+			if(cols[i] == cols[level])	<- 같은 열에 놓였는지 검사
+				return false;
+			else if on the same diagonal	<- 같은 대각선에 놓였는지 검사
+				return false;
+		}
+		return true;
+	}
+	
