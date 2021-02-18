@@ -1,18 +1,17 @@
 package sort;
 
+import java.util.Arrays;
+
 public class MergeSort {
 
 	public static void main(String[] args) {
 		int[] arr = { 6, 5, 3, 1, 8, 7, 2, 4 };
-		int test1=0;
-		while(test1<arr.length)
-			System.out.println(arr[test1++]);
+		System.out.println(Arrays.toString(arr));
 		
 		mergeSort(arr);
-		System.out.println("mergeSort----------------------");
-		int test2=0;
-		while(test2<arr.length)
-			System.out.println(arr[test2++]);
+		System.out.println("---------------------------MergeSort");
+		
+		System.out.println(Arrays.toString(arr));
 	}
 
 	public static void mergeSort(int[] arr) {
