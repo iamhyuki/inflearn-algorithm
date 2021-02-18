@@ -1,37 +1,53 @@
 package sort;
 
-import java.util.Arrays;
-
 public class MergeSort {
 
 	public static void main(String[] args) {
-
+		int[] arr = { 6, 5, 3, 1, 8, 7, 2, 4 };
+		int test1=0;
+		while(test1<arr.length)
+			System.out.println(arr[test1++]);
+		
+		mergeSort(arr);
+		System.out.println("mergeSort----------------------");
+		int test2=0;
+		while(test2<arr.length)
+			System.out.println(arr[test2++]);
 	}
-	
-	public static int[] sort(int[] arr) {
-		if(arr.length < 2) return arr;
-		
-		int mid = arr.length / 2;
-		int[] low_arr = sort(Arrays.copyOfRange(arr, 0, mid));
-		int[] high_arr = sort(Arrays.copyOfRange(arr, mid, arr.length));
-		
-		int[] mergedArr = new int[arr.length];
-		int m = 0;
-		int l = 0;
-		int h = 0;
-		while(1<low_arr.length && h< high_arr.length) {
-			if(low_arr[l] < high_arr[h])
-				mergedArr[m++] = low_arr[l++];
+
+	public static void mergeSort(int[] arr) {
+		sort(arr, 0, arr.length);
+	}
+
+	private static void sort(int[] arr, int low, int high) {
+		if (high - low < 2) {
+			return;
+		}
+
+		int mid = (low + high) / 2;
+		sort(arr, 0, mid);
+		sort(arr, mid, high);
+		merge(arr, low, mid, high);
+	}
+
+	private static void merge(int[] arr, int low, int mid, int high) {
+		int[] temp = new int[high - low];
+		int t = 0, l = low, h = mid;
+
+		while (l < mid && h < high) {
+			if (arr[l] < arr[h])
+				temp[t++] = arr[l++];
 			else
-				mergedArr[m++] = high_arr[h++];
+				temp[t++] = arr[h++];
 		}
-		while(l <low_arr.length) {
-			mergedArr[m++] = low_arr[l++];
+		while (l < mid)
+			temp[t++] = arr[l++];
+		while (h < high)
+			temp[t++] = arr[h++];
+		for (int i = low; i < high; i++) {
+			arr[i] = temp[i - low];
 		}
-		while(h < high_arr.length) {
-			mergedArr[m++] = high_arr[h++];
-		}
-		return mergedArr;
+
 	}
 
 }
