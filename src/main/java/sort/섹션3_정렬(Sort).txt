@@ -152,4 +152,4 @@ insertionSort(A[],n) -> 배열 A[1...n]을 정렬한다.
 		exchange A[i+1] and A[r];
 		return i+1;
 	}
-	}
+	
